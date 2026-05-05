@@ -1,258 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="SideDoor">
     <meta name="description" content="Browse faculty by department, view office hours, and locate offices on campus">
     <title>Professor Directory</title>
+
+    <!-- This 'link' tells the HTML to look at the specified file (style.css, in the styles folder), 
+         and apply all the CSS inside, as if it were all written out here. -->
     <link rel="stylesheet" href="styles/style.css">
+
 </head>
 
 <body>
 
-  <!-- ── PAGE HEADER ──────────────────────────────────────────────── -->
-  <h1>Professor Directory</h1>
-  <p class="subtitle">Browse faculty by department, view office hours, and locate offices on campus</p>
+    <!-- ── PAGE HEADER ──────────────────────────────────────────────── -->
+    <h1>Professor Directory</h1>
+    <p class="subtitle">Browse faculty by department, view office hours, and locate offices on campus</p>
 
-  <!-- ── CONTROLS ROW ─────────────────────────────────────────────── -->
-  <div class="controls">
-    <!-- "oninput" fires every time the user types a character -->
-    <input type="text" id="search" placeholder="Search professors..." oninput="render()" />
+    <!-- ── CONTROLS ROW ─────────────────────────────────────────────── -->
+    <div class="controls">
+        <!-- "oninput" fires every time the user types a character -->
+        <input type="text" id="search" placeholder="Search professors..." oninput="render()" />
 
-    <select id="dept-filter" onchange="render()">
-      <option value="">All Departments</option>
-      <option>Biology</option>
-      <option>Chemistry</option>
-      <option>Computer Science</option>
-      <option>Engineering</option>
-      <option>Mathematics</option>
-      <option>Physics</option>
-    </select>
+        <select id="dept-filter" onchange="render()">
+            <option value="">All Departments</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Computer Science</option>
+            <option>Engineering</option>
+            <option>Mathematics</option>
+            <option>Physics</option>
+        </select>
 
-    <select id="sort-order" onchange="render()">
-      <option value="az">Name (A-Z)</option>
-      <option value="za">Name (Z-A)</option>
-      <option value="dept">Department</option>
-    </select>
-  </div>
-
-  <!-- ── MAIN TWO-COLUMN LAYOUT ───────────────────────────────────── -->
-  <div class="main-layout">
-
-    <!-- LEFT: Faculty list -->
-    <div class="faculty-panel">
-      <div class="panel-title">
-        Faculty List <span id="count-label"></span>
-      </div>
-      <div id="faculty-list"></div>
+        <select id="sort-order" onchange="render()">
+            <option value="az">Name (A-Z)</option>
+            <option value="za">Name (Z-A)</option>
+            <option value="dept">Department</option>
+        </select>
     </div>
 
-    <!-- RIGHT: Campus map -->
-    <div class="map-panel">
-      <div class="panel-title">Campus Map</div>
-      <div class="map-box">
-        <div class="map-hint">Hover a pin for details</div>
+    <!-- ── MAIN TWO-COLUMN LAYOUT ───────────────────────────────────── -->
+    <div class="main-layout">
 
-        <!--
+        <!-- LEFT: Faculty list -->
+        <div class="faculty-panel">
+            <div class="panel-title">
+                Faculty List <span id="count-label"></span>
+            </div>
+            <div id="faculty-list"></div>
+        </div>
+
+        <!-- RIGHT: Campus map -->
+        <div class="map-panel">
+            <div class="panel-title">Campus Map</div>
+            <div class="map-box">
+                <div class="map-hint">Hover a pin for details</div>
+
+                <!--
           SVG = Scalable Vector Graphics. It's like HTML but for drawing shapes.
           viewBox="0 0 580 420" means our drawing canvas is 580 wide × 420 tall.
           The shapes inside are in those units, and the browser scales them to fit.
         -->
-        <svg id="campus-map" viewBox="0 0 580 420" xmlns="http://www.w3.org/2000/svg">
+                <svg id="campus-map" viewBox="0 0 580 420" xmlns="http://www.w3.org/2000/svg">
 
-          <!-- Background (campus grounds) -->
-          <rect width="580" height="420" fill="#e8f0e8" />
+                    <!-- Background (campus grounds) -->
+                    <rect width="580" height="420" fill="#e8f0e8" />
 
-          <!-- Campus buildings (gray rectangles) — purely decorative for now -->
-          <rect x="60"  y="60"  width="110" height="80"  rx="4" fill="#ccd8cc" />
-          <rect x="200" y="40"  width="90"  height="70"  rx="4" fill="#ccd8cc" />
-          <rect x="340" y="55"  width="120" height="90"  rx="4" fill="#ccd8cc" />
-          <rect x="60"  y="200" width="90"  height="100" rx="4" fill="#ccd8cc" />
-          <rect x="60"  y="330" width="100" height="70"  rx="4" fill="#ccd8cc" />
-          <rect x="390" y="310" width="140" height="90"  rx="4" fill="#ccd8cc" />
+                    <!-- Campus buildings (gray rectangles) — purely decorative for now -->
+                    <rect x="60" y="60" width="110" height="80" rx="4" fill="#ccd8cc" />
+                    <rect x="200" y="40" width="90" height="70" rx="4" fill="#ccd8cc" />
+                    <rect x="340" y="55" width="120" height="90" rx="4" fill="#ccd8cc" />
+                    <rect x="60" y="200" width="90" height="100" rx="4" fill="#ccd8cc" />
+                    <rect x="60" y="330" width="100" height="70" rx="4" fill="#ccd8cc" />
+                    <rect x="390" y="310" width="140" height="90" rx="4" fill="#ccd8cc" />
 
-          <!-- Pins are injected here by JavaScript -->
-          <g id="map-pins"></g>
-        </svg>
+                    <!-- Pins are injected here by JavaScript -->
+                    <g id="map-pins"></g>
+                </svg>
 
-        <!-- Tooltip (hidden by default, shown on pin hover) -->
-        <div class="pin-tooltip" id="tooltip"></div>
+                <!-- Tooltip (hidden by default, shown on pin hover) -->
+                <div class="pin-tooltip" id="tooltip"></div>
 
-        <!-- Legend -->
-        <div class="legend">
-          <div class="legend-title">Departments</div>
-          <!-- Each dept gets a colored dot + label -->
-          <div class="legend-item"><div class="legend-dot" style="background:#2196f3"></div> Computer Science</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#9c27b0"></div> Mathematics</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e91e63"></div> Physics</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#4caf50"></div> Chemistry</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#ff9800"></div> Biology</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#f44336"></div> Engineering</div>
+                <!-- Legend -->
+                <div class="legend">
+                    <div class="legend-title">Departments</div>
+                    <!-- Each dept gets a colored dot + label -->
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#2196f3"></div> Computer Science
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#9c27b0"></div> Mathematics
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#e91e63"></div> Physics
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#4caf50"></div> Chemistry
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#ff9800"></div> Biology
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background:#f44336"></div> Engineering
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
     </div>
+    <!-- This is the end of .main-layout -->
 
-  </div><!-- end .main-layout -->
 
+    <!-- JAVASCRIPT -->
+    <script>
+        // ─── DATA ─────────────────────────────────────────────────────────
+        // FEEL FREE TO DELETE/MODIFY ANYTHING IN THIS SECTION
 
-  <!-- JAVASCRIPT -->
-  <script>
-    // ─── DATA ─────────────────────────────────────────────────────────
-    // Each professor is a JavaScript object (like a row in a spreadsheet).
-    // "mapX" and "mapY" are the pin's position on our SVG canvas.
-    const professors = [
-      { name: "Dr. Amanda Williams",  dept: "Biology",          room: "Life Sciences, Room 303",    hours: "Mon/Wed 2-4pm",  mapX: 310, mapY: 300 },
-      { name: "Dr. Emily Rodriguez",  dept: "Physics",          room: "Physics Lab, Room 401",      hours: "Tue/Thu 1-3pm",  mapX: 390, mapY: 170 },
-      { name: "Dr. Jennifer Lee",     dept: "Physics",          room: "Physics Lab, Room 305",      hours: "Mon/Fri 10-11am",mapX: 410, mapY: 200 },
-      { name: "Dr. Lisa Thompson",    dept: "Computer Science", room: "Tech Building, Room 205",    hours: "Wed 3-5pm",      mapX: 290, mapY: 130 },
-      { name: "Dr. Sarah Mitchell",   dept: "Computer Science", room: "Tech Building, Room 301",    hours: "Tue/Thu 9-11am", mapX: 270, mapY: 155 },
-      { name: "Prof. Daniel Martinez",dept: "Engineering",      room: "Engineering Center, Room 403",hours: "Mon/Wed 1-2pm", mapX: 440, mapY: 130 },
-      { name: "Prof. David Park",     dept: "Engineering",      room: "Engineering Center, Room 501",hours: "Fri 11am-1pm",  mapX: 460, mapY: 160 },
-      { name: "Prof. James Chen",     dept: "Mathematics",      room: "Science Hall, Room 205",     hours: "Tue 2-4pm",      mapX: 155, mapY: 240 },
-      { name: "Prof. Michael Johnson",dept: "Chemistry",        room: "Chemistry Wing, Room 102",   hours: "Mon-Fri 9-10am", mapX: 225, mapY: 305 },
-      { name: "Prof. Robert Garcia",  dept: "Mathematics",      room: "Science Hall, Room 310",     hours: "Thu 1-3pm",      mapX: 175, mapY: 210 },
-    ];
+        // Each professor is a JavaScript object (like a row in a spreadsheet).
+        // "mapX" and "mapY" are the pin's position on our SVG canvas.
+        // (I've commented them out for now) 
+        const professors = [
+            // { name: "Dr. Amanda Williams", dept: "Biology", room: "Life Sciences, Room 303", hours: "Mon/Wed 2-4pm", mapX: 310, mapY: 300 },
+            // { name: "Dr. Emily Rodriguez", dept: "Physics", room: "Physics Lab, Room 401", hours: "Tue/Thu 1-3pm", mapX: 390, mapY: 170 },
+            // { name: "Dr. Jennifer Lee", dept: "Physics", room: "Physics Lab, Room 305", hours: "Mon/Fri 10-11am", mapX: 410, mapY: 200 },
+            // { name: "Dr. Lisa Thompson", dept: "Computer Science", room: "Tech Building, Room 205", hours: "Wed 3-5pm", mapX: 290, mapY: 130 },
+            // { name: "Dr. Sarah Mitchell", dept: "Computer Science", room: "Tech Building, Room 301", hours: "Tue/Thu 9-11am", mapX: 270, mapY: 155 },
+            // { name: "Prof. Daniel Martinez", dept: "Engineering", room: "Engineering Center, Room 403", hours: "Mon/Wed 1-2pm", mapX: 440, mapY: 130 },
+            // { name: "Prof. David Park", dept: "Engineering", room: "Engineering Center, Room 501", hours: "Fri 11am-1pm", mapX: 460, mapY: 160 },
+            // { name: "Prof. James Chen", dept: "Mathematics", room: "Science Hall, Room 205", hours: "Tue 2-4pm", mapX: 155, mapY: 240 },
+            // { name: "Prof. Michael Johnson", dept: "Chemistry", room: "Chemistry Wing, Room 102", hours: "Mon-Fri 9-10am", mapX: 225, mapY: 305 },
+            // { name: "Prof. Robert Garcia", dept: "Mathematics", room: "Science Hall, Room 310", hours: "Thu 1-3pm", mapX: 175, mapY: 210 },
+        ];
 
-    // Each department gets a color. These are used for the left border,
-    // the department label text, and the map pins.
-    const deptColors = {
-      "Biology":          "#ff9800",
-      "Chemistry":        "#4caf50",
-      "Computer Science": "#2196f3",
-      "Engineering":      "#f44336",
-      "Mathematics":      "#9c27b0",
-      "Physics":          "#e91e63",
-    };
+        // Each department gets a color. These are used for the left border,
+        // the department label text, and the map pins.
+        const deptColors = {
+            "Biology": "#ff9800",
+            "Chemistry": "#4caf50",
+            "Computer Science": "#2196f3",
+            "Engineering": "#f44336",
+            "Mathematics": "#9c27b0",
+            "Physics": "#e91e63",
+        };
 
-    // Tracks which professor row is currently selected (null = none)
-    let selectedName = null;
+        // Tracks which professor row is currently selected (null = none)
+        let selectedName = null;
 
-    // ─── RENDER FUNCTION ──────────────────────────────────────────────
-    // This runs every time the user types, changes a filter, or clicks.
-    // It re-reads all the current control values and rebuilds the list + pins.
-    function render() {
-      const search  = document.getElementById("search").value.toLowerCase();
-      const dept    = document.getElementById("dept-filter").value;
-      const sort    = document.getElementById("sort-order").value;
+        // ─── RENDER FUNCTION ──────────────────────────────────────────────
+        // This runs every time the user types, changes a filter, or clicks.
+        // It re-reads all the current control values and rebuilds the list + pins.
+        function render() {
+            const search = document.getElementById("search").value.toLowerCase();
+            const dept = document.getElementById("dept-filter").value;
+            const sort = document.getElementById("sort-order").value;
 
-      // 1. FILTER: keep only professors that match search + dept filter
-      let filtered = professors.filter(p => {
-        const matchSearch = p.name.toLowerCase().includes(search) ||
-                            p.dept.toLowerCase().includes(search);
-        const matchDept   = dept === "" || p.dept === dept;
-        return matchSearch && matchDept;
-      });
+            // 1. FILTER: keep only professors that match search + dept filter
+            let filtered = professors.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) ||
+                    p.dept.toLowerCase().includes(search);
+                const matchDept = dept === "" || p.dept === dept;
+                return matchSearch && matchDept;
+            });
 
-      // 2. SORT: rearrange the filtered list
-      filtered.sort((a, b) => {
-        if (sort === "az")   return a.name.localeCompare(b.name);
-        if (sort === "za")   return b.name.localeCompare(a.name);
-        if (sort === "dept") return a.dept.localeCompare(b.dept) || a.name.localeCompare(b.name);
-      });
+            // 2. SORT: rearrange the filtered list
+            filtered.sort((a, b) => {
+                if (sort === "az") return a.name.localeCompare(b.name);
+                if (sort === "za") return b.name.localeCompare(a.name);
+                if (sort === "dept") return a.dept.localeCompare(b.dept) || a.name.localeCompare(b.name);
+            });
 
-      // 3. UPDATE COUNT label
-      document.getElementById("count-label").textContent =
-        `(${filtered.length} professor${filtered.length !== 1 ? "s" : ""})`;
+            // 3. UPDATE COUNT label
+            document.getElementById("count-label").textContent =
+                `(${filtered.length} professor${filtered.length !== 1 ? "s" : ""})`;
 
-      // 4. REBUILD FACULTY LIST
-      const listEl = document.getElementById("faculty-list");
-      listEl.innerHTML = ""; // clear whatever was there before
+            // 4. REBUILD FACULTY LIST
+            const listEl = document.getElementById("faculty-list");
+            listEl.innerHTML = ""; // clear whatever was there before
 
-      if (filtered.length === 0) {
-        listEl.innerHTML = `<div class="no-results">No professors match your search.</div>`;
-      }
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="no-results">No professors match your search.</div>`;
+            }
 
-      filtered.forEach(p => {
-        const color = deptColors[p.dept] || "gray";
-        const isSelected = p.name === selectedName;
+            filtered.forEach(p => {
+                const color = deptColors[p.dept] || "gray";
+                const isSelected = p.name === selectedName;
 
-        // Build the card element in JS, then add it to the page
-        const card = document.createElement("div");
-        card.className = "faculty-card" + (isSelected ? " selected" : "");
-        card.style.borderLeftColor = color;
+                // Build the card element in JS, then add it to the page
+                const card = document.createElement("div");
+                card.className = "faculty-card" + (isSelected ? " selected" : "");
+                card.style.borderLeftColor = color;
 
-        // innerHTML lets us write HTML as a string inside the element
-        card.innerHTML = `
-          <strong>${p.name}</strong>
-          &bull;
-          <span class="dept-tag" style="color:${color}">${p.dept}</span>
-          &bull;
-          <span class="location">${p.room}</span>
-        `;
+                // innerHTML lets us write HTML as a string inside the element
+                card.innerHTML = `
+                                <strong>${p.name}</strong>
+                                &bull;
+                                <span class="dept-tag" style="color:${color}">${p.dept}</span>
+                                &bull;
+                                <span class="location">${p.room}</span>
+                                `;
 
-        // Clicking a card selects it (or deselects if already selected)
-        card.addEventListener("click", () => {
-          selectedName = isSelected ? null : p.name;
-          render(); // re-render so the highlight updates
-        });
+                // Clicking a card selects it (or deselects if already selected)
+                card.addEventListener("click", () => {
+                    selectedName = isSelected ? null : p.name;
+                    render(); // re-render so the highlight updates
+                });
 
-        listEl.appendChild(card);
-      });
+                listEl.appendChild(card);
+            });
 
-      // 5. REBUILD MAP PINS
-      const pinsEl = document.getElementById("map-pins");
-      pinsEl.innerHTML = ""; // clear old pins
+            // 5. REBUILD MAP PINS
+            const pinsEl = document.getElementById("map-pins");
+            pinsEl.innerHTML = ""; // clear old pins
 
-      // Show pins for ALL professors, but dim ones not in the filtered set
-      professors.forEach(p => {
-        const color      = deptColors[p.dept] || "gray";
-        const inFilter   = filtered.includes(p);
-        const isSelected = p.name === selectedName;
-        const opacity    = inFilter ? 1 : 0.2; // dim unmatched professors
+            // Show pins for ALL professors, but dim ones not in the filtered set
+            professors.forEach(p => {
+                const color = deptColors[p.dept] || "gray";
+                const inFilter = filtered.includes(p);
+                const isSelected = p.name === selectedName;
+                const opacity = inFilter ? 1 : 0.2; // dim unmatched professors
 
-        // Create a <g> (group) element to hold the circle + label
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute("class", "pin");
-        g.style.opacity = opacity;
+                // Create a <g> (group) element to hold the circle + label
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                g.setAttribute("class", "pin");
+                g.style.opacity = opacity;
 
-        // The dot
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", p.mapX);
-        circle.setAttribute("cy", p.mapY);
-        circle.setAttribute("r", isSelected ? 11 : 8);
-        circle.setAttribute("fill", color);
+                // The dot
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", p.mapX);
+                circle.setAttribute("cy", p.mapY);
+                circle.setAttribute("r", isSelected ? 11 : 8);
+                circle.setAttribute("fill", color);
 
-        g.appendChild(circle);
+                g.appendChild(circle);
 
-        // Show tooltip on hover
-        g.addEventListener("mouseenter", (e) => {
-          const tip = document.getElementById("tooltip");
-          tip.textContent = `${p.name} — ${p.room} | ${p.hours}`;
-          tip.style.display = "block";
-          positionTooltip(e);
-        });
-        g.addEventListener("mousemove", positionTooltip);
-        g.addEventListener("mouseleave", () => {
-          document.getElementById("tooltip").style.display = "none";
-        });
+                // Show tooltip on hover
+                g.addEventListener("mouseenter", (e) => {
+                    const tip = document.getElementById("tooltip");
+                    tip.textContent = `${p.name} — ${p.room} | ${p.hours}`;
+                    tip.style.display = "block";
+                    positionTooltip(e);
+                });
+                g.addEventListener("mousemove", positionTooltip);
+                g.addEventListener("mouseleave", () => {
+                    document.getElementById("tooltip").style.display = "none";
+                });
 
-        // Clicking a pin selects/deselects the professor (same as clicking the card)
-        g.addEventListener("click", () => {
-          selectedName = isSelected ? null : p.name;
-          render();
-        });
+                // Clicking a pin selects/deselects the professor (same as clicking the card)
+                g.addEventListener("click", () => {
+                    selectedName = isSelected ? null : p.name;
+                    render();
+                });
 
-        pinsEl.appendChild(g);
-      });
-    }
+                pinsEl.appendChild(g);
+            });
+        }
 
-    // ─── TOOLTIP POSITIONING ──────────────────────────────────────────
-    // Moves the tooltip to follow the mouse cursor
-    function positionTooltip(e) {
-      const tip     = document.getElementById("tooltip");
-      const mapBox  = document.querySelector(".map-box");
-      const rect    = mapBox.getBoundingClientRect(); // where the map box is on screen
+        // ─── TOOLTIP POSITIONING ──────────────────────────────────────────
+        // Moves the tooltip to follow the mouse cursor
+        function positionTooltip(e) {
+            const tip = document.getElementById("tooltip");
+            const mapBox = document.querySelector(".map-box");
+            const rect = mapBox.getBoundingClientRect(); // where the map box is on screen
 
-      // Place tooltip slightly above/right of the cursor
-      tip.style.left = (e.clientX - rect.left + 12) + "px";
-      tip.style.top  = (e.clientY - rect.top  - 30) + "px";
-    }
+            // Place tooltip slightly above/right of the cursor
+            tip.style.left = (e.clientX - rect.left + 12) + "px";
+            tip.style.top = (e.clientY - rect.top - 30) + "px";
+        }
 
-    // ─── INITIAL RENDER ───────────────────────────────────────────────
-    // Call render() once when the page first loads so content appears immediately
-    render();
-  </script>
+        // ─── INITIAL RENDER ───────────────────────────────────────────────
+        // Call render() once when the page first loads so content appears immediately
+        render();
+    </script>
 
 </body>
+
 </html>
