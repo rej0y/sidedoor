@@ -1,0 +1,217 @@
+/* ─── RESET & BASE ───────────────────────────────────────────── */
+    * {
+      box-sizing: border-box;   /* padding/border included in element width */
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Georgia, serif;
+      background: #f5f5f5;
+      color: #222;
+      padding: 32px;
+    }
+
+    /* ─── PAGE HEADER ────────────────────────────────────────────── */
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    /* ─── CONTROLS ROW (search + dropdowns) ─────────────────────── */
+    .controls {
+      display: flex;           /* lay children out in a row */
+      gap: 12px;               /* space between each control */
+      margin-bottom: 24px;
+      align-items: center;
+    }
+
+    .controls input {
+      flex: 1;                 /* search bar takes up all remaining space */
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    .controls select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    /* ─── TWO-COLUMN LAYOUT ──────────────────────────────────────── */
+    .main-layout {
+      display: flex;           /* side-by-side columns */
+      gap: 24px;
+      align-items: flex-start; /* don't stretch columns to equal height */
+    }
+
+    /* Left column: faculty list */
+    .faculty-panel {
+      flex: 1;                 /* takes up roughly half the space */
+      min-width: 0;            /* prevents overflow on small screens */
+    }
+
+    /* Right column: map */
+    .map-panel {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ─── SECTION HEADINGS ───────────────────────────────────────── */
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .panel-title span {
+      font-weight: normal;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    /* ─── FACULTY LIST ───────────────────────────────────────────── */
+    #faculty-list {
+      display: flex;
+      flex-direction: column;  /* stack cards vertically */
+      gap: 8px;
+    }
+
+    /* Each professor row */
+    .faculty-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px 14px;
+      border-left: 4px solid gray; /* colored left border — overridden by JS */
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .faculty-card:hover {
+      background: #f0f0f0;
+    }
+
+    /* Highlighted state when a card is selected */
+    .faculty-card.selected {
+      background: #eef4ff;
+      border-color: #aac4ff;
+    }
+
+    /* Department label inside the card (e.g. "Biology") */
+    .dept-tag {
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .location {
+      color: #555;
+    }
+
+    /* ─── CAMPUS MAP ─────────────────────────────────────────────── */
+    .map-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      overflow: hidden;        /* clip the SVG to the rounded corners */
+      position: relative;
+    }
+
+    .map-hint {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-size: 0.75rem;
+      color: #888;
+      pointer-events: none;    /* don't block mouse events on the map */
+      z-index: 10;
+    }
+
+    /* The SVG map fills the box */
+    #campus-map {
+      width: 100%;
+      display: block;
+    }
+
+    /* ─── MAP PINS ───────────────────────────────────────────────── */
+    /* Each pin is a group (<g>) in the SVG */
+    .pin {
+      cursor: pointer;
+    }
+
+    .pin circle {
+      stroke: white;
+      stroke-width: 2;
+      transition: r 0.15s;     /* smooth grow on hover */
+    }
+
+    .pin:hover circle {
+      r: 10;                   /* make circle bigger on hover */
+    }
+
+    /* Tooltip that appears when hovering a pin */
+    .pin-tooltip {
+      display: none;
+      position: absolute;
+      background: #222;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      pointer-events: none;
+      z-index: 20;
+      white-space: nowrap;
+    }
+
+    /* ─── MAP LEGEND ─────────────────────────────────────────────── */
+    .legend {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      z-index: 10;
+    }
+
+    .legend-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;      /* makes it a circle */
+    }
+
+    /* ─── EMPTY STATE ────────────────────────────────────────────── */
+    .no-results {
+      color: #999;
+      font-size: 0.9rem;
+      padding: 12px 0;
+    }
