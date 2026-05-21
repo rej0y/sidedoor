@@ -1,217 +1,282 @@
-/* ─── RESET & BASE ───────────────────────────────────────────── */
-    * {
-      box-sizing: border-box;   /* padding/border included in element width */
-      margin: 0;
-      padding: 0;
-    }
+/* =========================================
+   Global Theme Variables
+========================================= */
+:root {
+  /* Main Brand Colors */
+  --color-primary: #1E3A5F;       /* Deep Navy */
+  --color-secondary: #4F6D8A;     /* Slate Blue */
+  --color-accent: #D4A017;        /* Soft Gold */
 
-    body {
-      font-family: Georgia, serif;
-      background: #f5f5f5;
-      color: #222;
-      padding: 32px;
-    }
+  /* Neutral Colors */
+  --color-background: #F7F9FC;    /* Light Gray */
+  --color-surface: #FFFFFF;       /* Card Background */
+  --color-border: #E2E8F0;        /* Cool Gray */
 
-    /* ─── PAGE HEADER ────────────────────────────────────────────── */
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 4px;
-    }
+  /* Text Colors */
+  --color-text: #1F2937;          /* Dark Charcoal */
+  --color-text-muted: #6B7280;    /* Medium Gray */
 
-    .subtitle {
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 20px;
-    }
+  /* Department Colors */
+  --dept-health: #15803D;         /* Forest Green */
+  --dept-business: #2563EB;       /* Royal Blue */
+  --dept-education: #D97706;      /* Warm Amber */
+  --dept-language: #BE185D;       /* Deep Rose */
+  --dept-stem: #06B6D4;           /* Electric Cyan */
+  --dept-arts: #C026D3;           /* Rich Magenta */
 
-    /* ─── CONTROLS ROW (search + dropdowns) ─────────────────────── */
-    .controls {
-      display: flex;           /* lay children out in a row */
-      gap: 12px;               /* space between each control */
-      margin-bottom: 24px;
-      align-items: center;
-    }
+  /* Typography */
+  --font-main: 'Inter', sans-serif;
 
-    .controls input {
-      flex: 1;                 /* search bar takes up all remaining space */
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 0.95rem;
-    }
+  /* Layout */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
 
-    .controls select {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      background: white;
-      cursor: pointer;
-    }
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-md: 0 6px 18px rgba(0,0,0,0.08);
 
-    /* ─── TWO-COLUMN LAYOUT ──────────────────────────────────────── */
-    .main-layout {
-      display: flex;           /* side-by-side columns */
-      gap: 24px;
-      align-items: flex-start; /* don't stretch columns to equal height */
-    }
+  --transition: 0.25s ease;
+}
 
-    /* Left column: faculty list */
-    .faculty-panel {
-      flex: 1;                 /* takes up roughly half the space */
-      min-width: 0;            /* prevents overflow on small screens */
-    }
+/* =========================================
+   Base Styles
+========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* Right column: map */
-    .map-panel {
-      flex: 1;
-      min-width: 0;
-    }
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-weight: 400;
+  line-height: 1.6;
+}
 
-    /* ─── SECTION HEADINGS ───────────────────────────────────────── */
-    .panel-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+/* =========================================
+   Typography
+========================================= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-main);
+  font-weight: 600; /* Inter SemiBold */
+  color: var(--color-primary);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
 
-    .panel-title span {
-      font-weight: normal;
-      color: #888;
-      font-size: 0.9rem;
-    }
+.subtitle,
+.subheading {
+  font-weight: 500; /* Inter Medium */
+  color: var(--color-secondary);
+}
 
-    /* ─── FACULTY LIST ───────────────────────────────────────────── */
-    #faculty-list {
-      display: flex;
-      flex-direction: column;  /* stack cards vertically */
-      gap: 8px;
-    }
+p,
+li,
+span {
+  font-weight: 400; /* Inter Regular */
+  color: var(--color-text);
+}
 
-    /* Each professor row */
-    .faculty-card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 10px 14px;
-      border-left: 4px solid gray; /* colored left border — overridden by JS */
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
+/* Secondary Text */
+.text-muted {
+  color: var(--color-text-muted);
+}
 
-    .faculty-card:hover {
-      background: #f0f0f0;
-    }
+/* =========================================
+   Navigation
+========================================= */
+.navbar {
+  background: var(--color-primary);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+}
 
-    /* Highlighted state when a card is selected */
-    .faculty-card.selected {
-      background: #eef4ff;
-      border-color: #aac4ff;
-    }
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
 
-    /* Department label inside the card (e.g. "Biology") */
-    .dept-tag {
-      font-weight: bold;
-      font-size: 0.85rem;
-    }
+.navbar a:hover {
+  color: var(--color-accent);
+}
 
-    .location {
-      color: #555;
-    }
+/* =========================================
+   Buttons
+========================================= */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  text-decoration: none;
+}
 
-    /* ─── CAMPUS MAP ─────────────────────────────────────────────── */
-    .map-box {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: white;
-      overflow: hidden;        /* clip the SVG to the rounded corners */
-      position: relative;
-    }
+/* Primary Button */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
 
-    .map-hint {
-      position: absolute;
-      top: 10px;
-      left: 12px;
-      font-size: 0.75rem;
-      color: #888;
-      pointer-events: none;    /* don't block mouse events on the map */
-      z-index: 10;
-    }
+.btn-primary:hover {
+  background: #16314f;
+  transform: translateY(-2px);
+}
 
-    /* The SVG map fills the box */
-    #campus-map {
-      width: 100%;
-      display: block;
-    }
+/* Secondary Button */
+.btn-secondary {
+  background: var(--color-secondary);
+  color: white;
+}
 
-    /* ─── MAP PINS ───────────────────────────────────────────────── */
-    /* Each pin is a group (<g>) in the SVG */
-    .pin {
-      cursor: pointer;
-    }
+.btn-secondary:hover {
+  background: #425d75;
+}
 
-    .pin circle {
-      stroke: white;
-      stroke-width: 2;
-      transition: r 0.15s;     /* smooth grow on hover */
-    }
+/* Accent Button */
+.btn-accent {
+  background: var(--color-accent);
+  color: white;
+}
 
-    .pin:hover circle {
-      r: 10;                   /* make circle bigger on hover */
-    }
+.btn-accent:hover {
+  background: #b98912;
+}
 
-    /* Tooltip that appears when hovering a pin */
-    .pin-tooltip {
-      display: none;
-      position: absolute;
-      background: #222;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      pointer-events: none;
-      z-index: 20;
-      white-space: nowrap;
-    }
+/* =========================================
+   Cards
+========================================= */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
 
-    /* ─── MAP LEGEND ─────────────────────────────────────────────── */
-    .legend {
-      position: absolute;
-      bottom: 14px;
-      right: 14px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 0.8rem;
-      z-index: 10;
-    }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
 
-    .legend-title {
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
+/* =========================================
+   Department Tags / Badges
+========================================= */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 3px;
-    }
+/* Department Color Classes */
+.badge-health {
+  background: var(--dept-health);
+}
 
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;      /* makes it a circle */
-    }
+.badge-business {
+  background: var(--dept-business);
+}
 
-    /* ─── EMPTY STATE ────────────────────────────────────────────── */
-    .no-results {
-      color: #999;
-      font-size: 0.9rem;
-      padding: 12px 0;
-    }
+.badge-education {
+  background: var(--dept-education);
+}
+
+.badge-language {
+  background: var(--dept-language);
+}
+
+.badge-stem {
+  background: var(--dept-stem);
+}
+
+.badge-arts {
+  background: var(--dept-arts);
+}
+
+/* =========================================
+   Inputs & Forms
+========================================= */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: white;
+  color: var(--color-text);
+  font-family: var(--font-main);
+  transition: var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(79, 109, 138, 0.15);
+}
+
+/* =========================================
+   Sections
+========================================= */
+.section {
+  padding: 4rem 2rem;
+}
+
+.section-title {
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  color: var(--color-text-muted);
+  max-width: 700px;
+}
+
+/* =========================================
+   Utility Classes
+========================================= */
+.container {
+  width: min(1200px, 90%);
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.shadow {
+  box-shadow: var(--shadow-md);
+}
+
+.rounded {
+  border-radius: var(--radius-lg);
+}
