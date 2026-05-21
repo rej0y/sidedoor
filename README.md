@@ -37,6 +37,7 @@ Development Tools: Visual Studio Code, GitHub, Postman API
    * [ ] Map pins are highlighted when list items are hovered or selected
    * [ ] Selecting a map pins presents a modal (pop-up) with more professor info 
 * [ ] Schedule view where users can look for available professors at a specific time?
+* [ ] Site layout adjusts when viewed on mobiel devices/smaller screens
 
 ## Team Communication
 Discord
@@ -52,11 +53,11 @@ Discord
 |Create & Display Presentations      |Israel Lunceford            |
 |Submit Team Assignments             |Harim Choi                  |
 
-|Roles                      |Team Member(s)              |
-|--------------------------|----------------------------|
-|Database Specialist        |John Zhou                     |
-|Backend Team               |Harim Choi, Israel Lunceford   |
-|Frontend Team                |Matthew Hilton, Sid Skinner    |
+|Roles (Sprint 2)           |Team Member(s)              |
+|---------------------------|----------------------------|
+|Database Specialist        |John Zhou                   |
+|Backend Team               |Harim Choi, Israel Lunceford|
+|Frontend Team              |Matthew Hilton, Sid Skinner |
 
 ## Reflections
 (DO NOT FILL IN YET)
