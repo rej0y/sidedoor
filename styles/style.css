@@ -3,26 +3,26 @@
 ========================================= */
 :root {
   /* Main Brand Colors */
-  --color-primary: #1E3A5F;       /* Deep Navy */
-  --color-secondary: #4F6D8A;     /* Slate Blue */
-  --color-accent: #D4A017;        /* Soft Gold */
+  --color-primary: #1E3A5F;
+  --color-secondary: #4F6D8A;
+  --color-accent: #D4A017;
 
   /* Neutral Colors */
-  --color-background: #F7F9FC;    /* Light Gray */
-  --color-surface: #FFFFFF;       /* Card Background */
-  --color-border: #E2E8F0;        /* Cool Gray */
+  --color-background: #F7F9FC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
 
   /* Text Colors */
-  --color-text: #1F2937;          /* Dark Charcoal */
-  --color-text-muted: #6B7280;    /* Medium Gray */
+  --color-text: #1F2937;
+  --color-text-muted: #6B7280;
 
   /* Department Colors */
-  --dept-health: #15803D;         /* Forest Green */
-  --dept-business: #2563EB;       /* Royal Blue */
-  --dept-education: #D97706;      /* Warm Amber */
-  --dept-language: #BE185D;       /* Deep Rose */
-  --dept-stem: #06B6D4;           /* Electric Cyan */
-  --dept-arts: #C026D3;           /* Rich Magenta */
+  --dept-health: #15803D;
+  --dept-business: #2563EB;
+  --dept-education: #D97706;
+  --dept-language: #BE185D;
+  --dept-stem: #06B6D4;
+  --dept-arts: #C026D3;
 
   /* Typography */
   --font-main: 'Inter', sans-serif;
@@ -39,7 +39,7 @@
 }
 
 /* =========================================
-   Base Styles
+   Reset
 ========================================= */
 * {
   margin: 0;
@@ -47,12 +47,14 @@
   box-sizing: border-box;
 }
 
+/* =========================================
+   Base
+========================================= */
 body {
   background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-main);
-  font-weight: 400;
-  line-height: 1.6;
+  overflow: hidden;
 }
 
 /* =========================================
@@ -64,70 +66,117 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-main);
-  font-weight: 600; /* Inter SemiBold */
   color: var(--color-primary);
   line-height: 1.2;
-  margin-bottom: 0.75rem;
 }
 
-.subtitle,
-.subheading {
-  font-weight: 500; /* Inter Medium */
+.title {
+  font-size: 2.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 2rem;
+  font-weight: 500;
   color: var(--color-secondary);
+  margin-bottom: 0.4rem;
 }
 
-p,
-li,
-span {
-  font-weight: 400; /* Inter Regular */
-  color: var(--color-text);
-}
-
-/* Secondary Text */
-.text-muted {
+.text-muted,
+.text-faded {
   color: var(--color-text-muted);
 }
 
-/* =========================================
-   Navigation
-========================================= */
-.navbar {
-  background: var(--color-primary);
-  padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: var(--shadow-sm);
+.text-faded {
+  margin-bottom: 1rem;
 }
 
-.navbar a {
-  color: white;
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 500;
+/* =========================================
+   Main Desktop Layout
+========================================= */
+main {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* =========================================
+   Left List Panel
+========================================= */
+#list-section {
+  padding: 1.5rem;
+  background: var(--color-background);
+
+  border-right: 1px solid var(--color-border);
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   Search
+========================================= */
+#search-form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+#search-bar {
+  flex: 1;
+}
+
+/* =========================================
+   Inputs
+========================================= */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  background: white;
+  color: var(--color-text);
+
+  font-family: var(--font-main);
+
   transition: var(--transition);
 }
 
-.navbar a:hover {
-  color: var(--color-accent);
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+
+  box-shadow: 0 0 0 3px rgba(79, 109, 138, 0.15);
 }
 
 /* =========================================
    Buttons
 ========================================= */
 .btn {
-  display: inline-block;
-  padding: 0.8rem 1.4rem;
-  border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
-  font-weight: 600;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   transition: var(--transition);
-  text-decoration: none;
+
+  border-radius: var(--radius-md);
+
+  font-weight: 600;
 }
 
-/* Primary Button */
 .btn-primary {
   background: var(--color-primary);
   color: white;
@@ -135,10 +184,8 @@ span {
 
 .btn-primary:hover {
   background: #16314f;
-  transform: translateY(-2px);
 }
 
-/* Secondary Button */
 .btn-secondary {
   background: var(--color-secondary);
   color: white;
@@ -148,135 +195,327 @@ span {
   background: #425d75;
 }
 
-/* Accent Button */
-.btn-accent {
-  background: var(--color-accent);
-  color: white;
+/* =========================================
+   Column Headers
+========================================= */
+#column-headers {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+
+  align-items: center;
+
+  padding: 0.75rem 1rem;
+
+  border-bottom: 1px solid var(--color-border);
+
+  margin-bottom: 0.75rem;
+
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
-.btn-accent:hover {
-  background: #b98912;
+.column {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  cursor: pointer;
+}
+
+.sort-indicator {
+  width: 18px;
+  height: 18px;
 }
 
 /* =========================================
-   Cards
+   Professor List
 ========================================= */
-.card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+#prof-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-right: 0.5rem;
+
+  flex: 1;
 }
 
-.card:hover {
-  transform: translateY(-4px);
+/* Scrollbar */
+#prof-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+#prof-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#prof-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* =========================================
+   Professor Card
+========================================= */
+.professor-card {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+
+  align-items: center;
+
+  padding: 1rem 1.25rem;
+
+  background: white;
+
+  border: 1px solid var(--color-border);
+  border-left: 6px solid var(--dept-stem);
+
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.professor-card:hover {
+  transform: translateX(4px);
   box-shadow: var(--shadow-md);
 }
 
-/* =========================================
-   Department Tags / Badges
-========================================= */
-.badge {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  color: white;
-  font-size: 0.85rem;
+.prof-name {
   font-weight: 600;
 }
 
-/* Department Color Classes */
-.badge-health {
-  background: var(--dept-health);
+.prof-spec {
+  color: var(--color-text-muted);
 }
 
-.badge-business {
-  background: var(--dept-business);
-}
-
-.badge-education {
-  background: var(--dept-education);
-}
-
-.badge-language {
-  background: var(--dept-language);
-}
-
-.badge-stem {
-  background: var(--dept-stem);
-}
-
-.badge-arts {
-  background: var(--dept-arts);
+.prof-loc {
+  text-align: right;
+  font-weight: 500;
 }
 
 /* =========================================
-   Inputs & Forms
+   Map Section
 ========================================= */
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: white;
-  color: var(--color-text);
-  font-family: var(--font-main);
-  transition: var(--transition);
+#map-section {
+  padding: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-secondary);
-  box-shadow: 0 0 0 3px rgba(79, 109, 138, 0.15);
-}
-
-/* =========================================
-   Sections
-========================================= */
-.section {
-  padding: 4rem 2rem;
-}
-
-.section-title {
+#map-header {
   margin-bottom: 1rem;
 }
 
-.section-subtitle {
-  color: var(--color-text-muted);
-  max-width: 700px;
+/* =========================================
+   Map Viewport
+========================================= */
+#map-viewport {
+  flex: 1;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: white;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
 }
 
 /* =========================================
-   Utility Classes
+   Map Canvas
 ========================================= */
-.container {
-  width: min(1200px, 90%);
-  margin: 0 auto;
+#map-canvas {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
 }
 
-.text-center {
-  text-align: center;
+/* =========================================
+   Campus Map Image
+========================================= */
+#campus-map-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  user-select: none;
+  pointer-events: none;
 }
 
-.flex {
-  display: flex;
-}
+/* =========================================
+   Map Controls
+========================================= */
+#map-controls {
+  position: absolute;
 
-.grid {
+  right: 1rem;
+  bottom: 1rem;
+
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 56px);
+
+  gap: 0.6rem;
+
+  z-index: 100;
 }
 
-.shadow {
+.map-move-btn,
+.map-zoom-btn {
+  width: 56px;
+  height: 56px;
+
+  border-radius: 14px;
+
   box-shadow: var(--shadow-md);
 }
 
-.rounded {
+.btn-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================================
+   Mobile Bottom Tabs
+========================================= */
+#section-tabs {
+  display: none;
+}
+
+.section-tab {
+  width: 64px;
+  height: 64px;
+}
+
+.tab-icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* =========================================
+   Footer
+========================================= */
+footer {
+  display: none;
+}
+
+/* =========================================
+   Generic Card
+========================================= */
+.card {
+  background: white;
   border-radius: var(--radius-lg);
+}
+
+/* =========================================
+   Responsive Layout
+========================================= */
+@media (max-width: 900px) {
+
+  body {
+    overflow: auto;
+  }
+
+  main {
+    display: block;
+    height: auto;
+  }
+
+  #list-section,
+  #map-section {
+    height: calc(100vh - 90px);
+    padding-bottom: 6rem;
+  }
+
+  #map-section {
+    display: none;
+  }
+
+  body.map-view #list-section {
+    display: none;
+  }
+
+  body.map-view #map-section {
+    display: flex;
+  }
+
+  /* Mobile Tabs */
+  #section-tabs {
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 0.75rem;
+
+    background: white;
+
+    border-top: 1px solid var(--color-border);
+
+    z-index: 999;
+  }
+
+  /* Search Stack */
+  #search-form {
+    flex-direction: column;
+  }
+
+  /* Hide table headers */
+  #column-headers {
+    display: none;
+  }
+
+  /* Mobile Cards */
+  .professor-card {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+
+    border-radius: 22px;
+
+    padding: 1rem;
+  }
+
+  .prof-loc {
+    text-align: left;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+  }
+
+  /* Smaller map buttons */
+  .map-move-btn,
+  .map-zoom-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  #map-controls {
+    grid-template-columns: repeat(2, 48px);
+  }
 }
