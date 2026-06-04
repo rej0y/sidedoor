@@ -1,4 +1,4 @@
-# Office Hours Tracker
+# Project SideDoor (Office Hours Tracker)
 
 ## Team Members
 
@@ -53,11 +53,11 @@ Discord
 |Create & Display Presentations      |Israel Lunceford            |
 |Submit Team Assignments             |Harim Choi                  |
 
-|Roles (Sprint 2)           |Team Member(s)              |
-|---------------------------|----------------------------|
-|Database Specialist        |John Zhou                   |
-|Backend Team               |Harim Choi, Israel Lunceford|
-|Frontend Team              |Matthew Hilton, Sid Skinner |
+|Roles (Sprint 2)           |Team Member(s)                          |
+|---------------------------|----------------------------------------|
+|Database Specialist        |John Zhou                               |
+|Backend Team               |Harim Choi, Israel Lunceford, John Zhou |
+|Frontend Team              |Matthew Hilton, Sid Skinner             |
 
 ## Reflections
 (DO NOT FILL IN YET)

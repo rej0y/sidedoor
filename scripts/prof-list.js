@@ -26,9 +26,9 @@ function buildProfessorCard(prof) {
     // Put the actual HTML content we want into the newCard element
     // *** THIS IS VERY INCOMPLETE but functional, it will need a lot of expanding/polishing
     newCard.innerHTML = `
+        <span class="prof-title">${prof.title}</span>
         <span class="prof-name">${prof.name}</span>
-        <span class="prof-spec">${prof.specialization}</span>
-        <span class="prof-loc">${prof.building} ${prof.roomNumber}</span>
+        <span class="prof-loc">${prof.office_location}</span>
     `
     // Finally, attach the newCard div to the DOM
     profList.appendChild(newCard);

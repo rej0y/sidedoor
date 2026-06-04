@@ -38,6 +38,9 @@
   box-sizing: border-box;
 }
 
+/* =========================================
+   Base
+========================================= */
 body {
   background: var(--color-background);
   color: var(--color-text);
