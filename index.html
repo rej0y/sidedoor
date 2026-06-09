@@ -5,104 +5,233 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="SideDoor">
-    <meta name="description" content="Browse faculty by department, view office hours, and locate offices on campus">
-    <title>Project SideDoor</title>
+    <meta name="description"
+        content="Browse faculty by department, view office hours, and locate offices on campus">
+
+    <title>Professor Directory</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
     <script src="https://js.arcgis.com/4.32/"></script>
+
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="icon" type="image/x-icon" href="icons/sidedoor_logo.ico">
+
+    <!-- JavaScript -->
     <script src="scripts/main.js" type="module" defer></script>
     <script src="scripts/map.js" type="module" defer></script>
 
 </head>
 
 <body>
+
     <main>
+
+        <!-- ==================================================
+             LEFT PANEL
+        =================================================== -->
+
         <section id="list-section">
+
             <h1 class="title">Office Hours Viewer</h1>
 
             <form id="search-form" onsubmit="return false;">
-                <input type="text" id="search-bar" placeholder="Search professors...">
-                <button type="button" id="search-button" class="btn btn-primary">Search</button>
+                <input
+                    type="text"
+                    id="search-bar"
+                    placeholder="Search professors...">
+
+                <button
+                    type="button"
+                    id="search-button"
+                    class="btn btn-primary">
+                    Search
+                </button>
             </form>
+
             <h2 class="subtitle">Professor List</h2>
-            <!-- TODO: Replace text to say "Tap" instead of "Click" when viewing on mobile -->
-            <p class="text-faded">Click on a professor card to see more info</p>
+
+            <p class="text-faded">
+                Click on a professor card to see more info
+            </p>
+
             <div id="column-headers">
-                <span class="column column-dept" data-sortFor="dept">
-                    Department <img class="sort-indicator" src="icons/chevrons-up-down.svg" alt="Sort by department">
+
+                <span
+                    class="column column-dept"
+                    data-sortFor="dept">
+
+                    Department
+
+                    <img
+                        class="sort-indicator"
+                        src="icons/chevrons-up-down.svg"
+                        alt="Sort by department">
+
                 </span>
-                <span class="column column-name" data-sortFor="name">
-                    Name <img class="sort-indicator" src="icons/chevrons-up-down.svg" alt="Sort by name">
+
+                <span
+                    class="column column-name"
+                    data-sortFor="name">
+
+                    Name
+
+                    <img
+                        class="sort-indicator"
+                        src="icons/chevrons-up-down.svg"
+                        alt="Sort by name">
+
                 </span>
-                <!-- <span class="column column-misc" data-sortFor="misc">
-                    Misc??? <img class="sort-indicator" src="icons/chevrons-up-down.svg" alt="Sort by misc">
-                </span> -->
-                <span class="column column-loc" data-sortFor="loc">
-                    Office Location <img class="sort-indicator" src="icons/chevrons-up-down.svg" alt="Sort by location">
+
+                <span
+                    class="column column-loc"
+                    data-sortFor="loc">
+
+                    Office Location
+
+                    <img
+                        class="sort-indicator"
+                        src="icons/chevrons-up-down.svg"
+                        alt="Sort by location">
+
                 </span>
-            </div>
-            <!-- TODO: Add overflow-y:auto and overflow: hidden to prof-list in CSS for scroll behavior -->
-            <div id="prof-list">
-                <!-- ***** Professors cards are all inserted here by JavaScript ***** -->
-                <!-- TODO: Align cards' inner elements with column headers using CSS -->
-            </div>
-        </section>
-        <section id="map-section">
-            <div id="map-header">
-                <h2 class="subtitle">Campus Map</h2>
-                <!-- TODO: Replace text to say "Tap", "Drag" and "Pinch" when on mobile -->
-                <p class="text-muted">Click any pin for more info</p>
-                <p class="text-muted">Click & drag to pan · Scroll to zoom</p>
+
             </div>
 
+            <div id="prof-list">
+                <!-- Professor cards inserted here via JavaScript -->
+            </div>
+
+        </section>
+
+        <!-- ==================================================
+             RIGHT PANEL (MAP)
+        =================================================== -->
+
+        <section id="map-section">
+
             <div id="map-viewport">
+
+                <!-- Map Header INSIDE map viewport -->
+
+                <div id="map-header">
+
+                    <h2>Campus Map</h2>
+
+                    <p>
+                        Click any pin for more info
+                    </p>
+
+                    <p>
+                        Click &amp; drag to pan • Scroll to zoom
+                    </p>
+
+                </div>
+
+                <!-- Map -->
+
                 <div id="map-canvas">
                     <!-- Map baselayer and data pins injected by live server (map.js) -->
                 </div>
+
+                <!-- Map Controls -->
+
+                <div id="map-controls">
+
+                    <!-- Movement Pad -->
+
+                    <button
+                        type="button"
+                        id="map-pad"
+                        class="btn btn-primary">
+
+                        <span class="arrow up">▲</span>
+                        <span class="arrow left">◀</span>
+                        <span class="arrow right">▶</span>
+                        <span class="arrow down">▼</span>
+
+                    </button>
+
+                    <!-- Zoom In -->
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary map-zoom-btn"
+                        id="btn-zoom-in">
+
+                        +
+
+                    </button>
+
+                    <!-- Zoom Out -->
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary map-zoom-btn"
+                        id="btn-zoom-out">
+
+                        −
+
+                    </button>
+
+                </div>
+
             </div>
 
-            <div id="map-controls">
-                <button type="button" class="btn btn-secondary map-move-btn" id="btn-pan-up">
-                    <img class="btn-icon" src="icons/chevron-up.svg" alt="Pan map up">
-                </button>
-                <button type="button" class="btn btn-secondary map-move-btn" id="btn-pan-left">
-                    <img class="btn-icon" src="icons/chevron-left.svg" alt="Pan map left">
-                </button>
-                <button type="button" class="btn btn-secondary map-move-btn" id="btn-pan-right">
-                    <img class="btn-icon" src="icons/chevron-right.svg" alt="Pan map right">
-                </button>
-                <button type="button" class="btn btn-secondary map-move-btn" id="btn-pan-down">
-                    <img class="btn-icon" src="icons/chevron-down.svg" alt="Pan map down">
-                </button>
-                <button type="button" class="btn btn-secondary map-zoom-btn" id="btn-zoom-in">
-                    <img class="btn-icon" src="icons/magnifying-glass-plus.svg" alt="Zoom in">
-                </button>
-                <button type="button" class="btn btn-secondary map-zoom-btn" id="btn-zoom-out">
-                    <img class="btn-icon" src="icons/magnifying-glass-minus.svg" alt="Zoom out">
-                </button>
-            </div>
         </section>
+
     </main>
-    <!-- View tabs (for mobile) -->
+
+    <!-- ==================================================
+         MOBILE TABS
+    =================================================== -->
+
     <div id="section-tabs">
-        <button class="btn btn-secondary section-tab" id="list-section-tab">
-            <img class="tab-icon" src="icons/queue-list.svg" alt="List view">
+
+        <button
+            class="btn btn-secondary section-tab"
+            id="list-section-tab">
+
+            <img
+                class="tab-icon"
+                src="icons/queue-list.svg"
+                alt="List view">
+
         </button>
-        <button class="btn btn-secondary section-tab" id="map-section-tab">
-            <img class="tab-icon" src="icons/map.svg" alt="Map view">
+
+        <button
+            class="btn btn-secondary section-tab"
+            id="map-section-tab">
+
+            <img
+                class="tab-icon"
+                src="icons/map.svg"
+                alt="Map view">
+
         </button>
-        <button class="btn btn-secondary section-tab" id="split-section-tab">
-            <img class="tab-icon" src="icons/square-split-vertical.svg" alt="Split view">
+
+        <button
+            class="btn btn-secondary section-tab"
+            id="split-section-tab">
+
+            <img
+                class="tab-icon"
+                src="icons/square-split-vertical.svg"
+                alt="Split view">
+
         </button>
+
     </div>
 
     <footer>
-        <p class="text-faded">&copy; SideDoor, Inc. All Rights Reserved.</p>
+        <p class="text-faded">
+            &copy; SideDoor, Inc. All Rights Reserved.
+        </p>
     </footer>
+
 </body>
 
 </html>
