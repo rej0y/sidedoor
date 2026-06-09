@@ -10,9 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.32/"></script>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="icon" type="image/x-icon" href="icons/sidedoor_logo.ico">
     <script src="scripts/main.js" type="module" defer></script>
+    <script src="scripts/map.js" type="module" defer></script>
 
 </head>
 
@@ -58,8 +61,7 @@
 
             <div id="map-viewport">
                 <div id="map-canvas">
-                    <img src="images/campus_map.png" id="campus-map-img" alt="Campus map">
-                    <!-- ***** Pins are all inserted here by JavaScript ***** -->
+                    <!-- Map baselayer and data pins injected by live server (map.js) -->
                 </div>
             </div>
 
