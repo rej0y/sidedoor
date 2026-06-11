@@ -1,5 +1,3 @@
-
-
 const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
     await $arcgis.import([
         "@arcgis/core/config.js",
@@ -7,55 +5,80 @@ const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
         "@arcgis/core/views/MapView.js",
         "@arcgis/core/Graphic.js",
         "@arcgis/core/layers/GraphicsLayer.js",
-    ])
-;
+    ]);
 
-const mapConfig = await fetch('http://66.112.209.106:3000/map/config').then((res) => res.json());
-console.log(mapConfig);
+const API_BASE_URL = "http://66.112.209.106:3000";
+
+// 1. Get ArcGIS config from backend
+const mapConfig = await fetch(`${API_BASE_URL}/map/config`)
+    .then((res) => res.json());
+
+console.log("Map config:", mapConfig);
+
+// 2. Set ArcGIS API key BEFORE creating the map
 esriConfig.apiKey = mapConfig.apiKey;
 
+// 3. Create map
 const map = new Map({
-    basemap: "arcgis/community",
+    basemap: mapConfig.basemap || "arcgis-navigation",
 });
 
+// 4. Create view
 const view = new MapView({
     container: "map-canvas",
     map: map,
-    center: [-111.78311813556628, 43.81768993455273],
-    zoom: 15,
+    center: [
+        mapConfig.center.longitude,
+        mapConfig.center.latitude
+    ],
+    zoom: mapConfig.zoom || 15,
     constraints: {
         snapToZoom: false,
     },
 });
 
+// 5. Add graphics layer
 const graphicsLayer = new GraphicsLayer();
 map.add(graphicsLayer);
 
+// 6. Get building locations from backend
+const locations = await fetch(`${API_BASE_URL}/map-locations`)
+    .then((res) => res.json());
+
+console.log("Map locations:", locations);
+
+// 7. Marker symbol
 const blueMapPinSymbol = {
     type: "simple-marker",
-    path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
-    color: [0, 82, 110], // TODO: choose color based on department
-    size: "32px",
-    yoffset: "16px", // <- Make sure this is just half of the size
+    style: "circle",
+    color: [0, 82, 110],
+    size: "14px",
+    outline: {
+        color: [255, 255, 255],
+        width: 2,
+    },
 };
 
-// landmarkList.forEach(landmark => {
-//     const landmarkGraphic = new Graphic({
-//         geometry: {
-//             type: "point",
-//             longitude: landmark.longitude,
-//             latitude: landmark.latitude,
-//         },
-//         symbol: blueMapPinSymbol,
-//         attributes: {
-//             name: landmark.name,
-//             description: landmark.description,
-//         },
-//         popupTemplate: {
-//             title: landmark.name,
-//             content: landmark.description,
-//         },
-//     });
+// 8. Add markers
+locations
+    .filter((location) => location.latitude && location.longitude)
+    .forEach((location) => {
+        const buildingGraphic = new Graphic({
+            geometry: {
+                type: "point",
+                longitude: location.longitude,
+                latitude: location.latitude,
+            },
+            symbol: blueMapPinSymbol,
+            attributes: {
+                building: location.building,
+                building_name: location.building_name,
+            },
+            popupTemplate: {
+                title: "{building}",
+                content: "{building_name}",
+            },
+        });
 
-//     graphicsLayer.add(landmarkGraphic);
-// });
+        graphicsLayer.add(buildingGraphic);
+    });
