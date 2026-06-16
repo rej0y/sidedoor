@@ -8,6 +8,8 @@ const response = await fetch("http://66.112.209.106:3000/professors");
 // It returns a huge string, which needs to be parsed as JSON data
 const professors = await response.json();
 
+console.log(professors);
+
 
 // --- Hard-coded mock API response for testing purposes --- //
 // import professors from './mock_api_response.js';

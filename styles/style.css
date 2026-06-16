@@ -13,12 +13,16 @@
   --color-text: #1F2937;
   --color-text-muted: #6B7280;
 
+  /* Department Colors */
+  --dept-cse: #2563EB;
+  --dept-stem: #0EA5A8;
+  --dept-business: #D97706;
+  --dept-education: #7C3AED;
+  --dept-humanities: #BE185D;
   --dept-health: #15803D;
-  --dept-business: #2563EB;
-  --dept-education: #D97706;
-  --dept-language: #BE185D;
-  --dept-stem: #06B6D4;
-  --dept-arts: #C026D3;
+  --dept-arts: #DC2626;
+  --dept-faculty: #4F6D8A; /* matches site secondary color */
+  --dept-other: #64748B;
 
   --font-main: 'Inter', sans-serif;
 
