@@ -18,17 +18,16 @@ function buildProfessorCard(prof) {
     // Give it the desired HTML classes
     newCard.className = "card professor-card";
 
-    // Store useful data from the professor JSON object as HTML dataset attributes
-    // Most of the data will be stored in the DOM somewhere already as there own elements, generated below
-    newCard.dataset.id = prof.id;
-    newCard.dataset.dept = prof.department; // ("department" just makes more sense than "college" tbh)
+    // Store the professor's database id inside the HTML element as a dataset attribute
+    // This will be useful for when the user clicks on a specific professor and we want to ask the database about that professor again
+    newCard.dataset.id = prof.professor_id;
 
     // Put the actual HTML content we want into the newCard element
     // *** THIS IS VERY INCOMPLETE but functional, it will need a lot of expanding/polishing
     newCard.innerHTML = `
-        <span class="prof-title">${prof.title}</span>
-        <span class="prof-name">${prof.name}</span>
-        <span class="prof-loc">${prof.office_location}</span>
+        <span class="prof-dept">${prof.departments}</span>
+        <span class="prof-name">${prof.first_name} ${prof.last_name}</span>
+        <span class="prof-loc">${prof.building} ${prof.room_number}</span>
     `
     // Finally, attach the newCard div to the DOM
     profList.appendChild(newCard);
