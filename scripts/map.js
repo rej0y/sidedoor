@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './config.js';
+
 const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
     await $arcgis.import([
         "@arcgis/core/config.js",
@@ -6,8 +8,6 @@ const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
         "@arcgis/core/Graphic.js",
         "@arcgis/core/layers/GraphicsLayer.js",
     ]);
-
-const API_BASE_URL = "http://66.112.209.106:3000";
 
 // 1. Get ArcGIS config from backend
 const mapConfig = await fetch(`${API_BASE_URL}/map/config`)
