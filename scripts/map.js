@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-import { API_BASE_URL } from './config.js';
-=======
-
 // -------------------------------------------------------------------------
 // BUILDING DATA DICTIONARY
 // -------------------------------------------------------------------------
@@ -181,7 +177,8 @@ const buildingList = [
 // -------------------------------------------------------------------------
 // MAP CONFIG/SETUP
 // -------------------------------------------------------------------------
->>>>>>> Stashed changes
+
+import { API_BASE_URL } from './config.js';
 
 const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
     await $arcgis.import([
