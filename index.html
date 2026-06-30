@@ -22,6 +22,7 @@
 
     <!-- JavaScript -->
     <script src="scripts/main.js" type="module" defer></script>
+    <script src="scripts/map-popup.js" type="module" defer></script>
     <script src="scripts/map.js" type="module" defer></script>
 
 </head>
@@ -55,8 +56,13 @@
             <h2 class="subtitle">Professor List</h2>
 
             <p class="text-faded">
-                Click on a professor card to see more info
+                Click on a professor card to locate their building on the map
             </p>
+
+            <div id="filter-bar" class="filter-bar">
+                <div class="filter-dropdown" id="building-filter"></div>
+                <div class="filter-dropdown" id="department-filter"></div>
+            </div>
 
             <div id="column-headers">
 
@@ -122,7 +128,7 @@
                     <h2>Campus Map</h2>
 
                     <p>
-                        Click any pin for more info
+                        Click a building pin to see faculty located there
                     </p>
 
                     <p>
@@ -177,6 +183,24 @@
 
                     </button>
 
+                </div>
+
+                <div id="map-popup" class="map-popup" hidden role="dialog" aria-labelledby="map-popup-title">
+                    <div class="map-popup-header">
+                        <div>
+                            <h3 id="map-popup-title"></h3>
+                            <p id="map-popup-subtitle" class="text-faded"></p>
+                        </div>
+                        <button type="button" id="map-popup-close" class="map-popup-close" aria-label="Close">
+                            &times;
+                        </button>
+                    </div>
+                    <div id="map-popup-body" class="map-popup-body"></div>
+                    <div id="map-popup-actions" class="map-popup-actions">
+                        <button type="button" id="map-popup-show-in-list" class="btn btn-primary">
+                            Show in list
+                        </button>
+                    </div>
                 </div>
 
             </div>
