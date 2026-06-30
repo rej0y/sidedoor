@@ -15,11 +15,15 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.32/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.32/"></script>
 
     <link rel="stylesheet" href="styles/style.css">
 
     <!-- JavaScript -->
     <script src="scripts/main.js" type="module" defer></script>
+    <script src="scripts/map-popup.js" type="module" defer></script>
+    <script src="scripts/map.js" type="module" defer></script>
 
 </head>
 
@@ -52,8 +56,13 @@
             <h2 class="subtitle">Professor List</h2>
 
             <p class="text-faded">
-                Click on a professor card to see more info
+                Click on a professor card to locate their building on the map
             </p>
+
+            <div id="filter-bar" class="filter-bar">
+                <div class="filter-dropdown" id="building-filter"></div>
+                <div class="filter-dropdown" id="department-filter"></div>
+            </div>
 
             <div id="column-headers">
 
@@ -119,7 +128,7 @@
                     <h2>Campus Map</h2>
 
                     <p>
-                        Click any pin for more info
+                        Click a building pin to see faculty located there
                     </p>
 
                     <p>
@@ -131,14 +140,7 @@
                 <!-- Map -->
 
                 <div id="map-canvas">
-
-                    <img
-                        src="images/campus_map.png"
-                        id="campus-map-img"
-                        alt="Campus map">
-
-                    <!-- Map pins inserted by JavaScript -->
-
+                    <!-- Map baselayer and data pins injected by live server (map.js) -->
                 </div>
 
                 <!-- Map Controls -->
@@ -147,40 +149,37 @@
 
                     <!-- Movement Pad -->
 
-                    <button
-                        type="button"
-                        id="map-pad"
-                        class="btn btn-primary">
+                <div id="map-controls">
 
-                        <span class="arrow up">▲</span>
-                        <span class="arrow left">◀</span>
-                        <span class="arrow right">▶</span>
-                        <span class="arrow down">▼</span>
+                    <div id="map-pad" class="btn btn-primary">
 
-                    </button>
+                        <button class="arrow-btn up" data-dir="up">▲</button>
+                        <button class="arrow-btn left" data-dir="left">◀</button>
+                        <button class="arrow-btn right" data-dir="right">▶</button>
+                        <button class="arrow-btn down" data-dir="down">▼</button>
 
-                    <!-- Zoom In -->
+                    </div>
 
-                    <button
-                        type="button"
-                        class="btn btn-secondary map-zoom-btn"
-                        id="btn-zoom-in">
+                </div>
 
-                        +
+                </div>
 
-                    </button>
-
-                    <!-- Zoom Out -->
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary map-zoom-btn"
-                        id="btn-zoom-out">
-
-                        −
-
-                    </button>
-
+                <div id="map-popup" class="map-popup" hidden role="dialog" aria-labelledby="map-popup-title">
+                    <div class="map-popup-header">
+                        <div>
+                            <h3 id="map-popup-title"></h3>
+                            <p id="map-popup-subtitle" class="text-faded"></p>
+                        </div>
+                        <button type="button" id="map-popup-close" class="map-popup-close" aria-label="Close">
+                            &times;
+                        </button>
+                    </div>
+                    <div id="map-popup-body" class="map-popup-body"></div>
+                    <div id="map-popup-actions" class="map-popup-actions">
+                        <button type="button" id="map-popup-show-in-list" class="btn btn-primary">
+                            Show in list
+                        </button>
+                    </div>
                 </div>
 
             </div>
