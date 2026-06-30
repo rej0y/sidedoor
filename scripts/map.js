@@ -1,221 +1,41 @@
-// -------------------------------------------------------------------------
-// BUILDING DATA DICTIONARY
-// -------------------------------------------------------------------------
-
-const buildingList = [
-    {
-        name: "John Taylor Building",
-        code: "TAY",
-        longitude: -111.78248444801046,
-        latitude: 43.81694583377972,
-    },
-    {
-        name: "Hyrum Manwaring Center",
-        code: "MC",
-        longitude: -111.78263637667692,
-        latitude: 43.818451753364144,
-    },
-    {
-        name: "David O. McKay Library",
-        code: "MCK",
-        longitude: -111.78286277912267,
-        latitude: 43.81949647069055,
-    },
-    {
-        name: "BYU-Idaho Center",
-        code: "BCTR",
-        longitude: -111.78508397663666,
-        latitude: 43.8184963653647,
-    },
-    {
-        name: "Jacob Spori Building",
-        code: "SPO",
-        longitude: -111.7824002916312,
-        latitude: 43.82082684021518,
-    },
-    {
-        name: "George S. Romney Building",
-        code: "ROM",
-        longitude: -111.78317387843754,
-        latitude: 43.82021651041659,
-    },
-    {
-        name: "Eliza R. Snow Performing Arts Center",
-        code: "SNO",
-        longitude: -111.78354930433272,
-        latitude: 43.82130748684191,
-    },
-    {
-        name: "John L. Clarke Building",
-        code: "CLK",
-        longitude: -111.78172763569471,
-        latitude: 43.82025555244315,
-    },
-    {
-        name: "Joseph Fielding Smith Building",
-        code: "SM",
-        longitude: -111.78144987690813,
-        latitude: 43.81919463126997,
-    },
-    {
-        name: "Gordon B. Hinckley Building",
-        code: "HIN",
-        longitude: -111.77986791356423,
-        latitude: 43.81588034742696,
-    },
-    {
-        name: "Science and Technology Center",
-        code: "STC",
-        longitude: -111.78466182238381,
-        latitude: 43.814675493316614,
-    },
-    {
-        name: "Mark Austin Technical & Engineering Building",
-        code: "AUS",
-        longitude: -111.78435264563406,
-        latitude: 43.815819627755566,
-    },
-    {
-        name: "Ezra Taft Benson Agricultural & Biological Sciences Building",
-        code: "BEN",
-        longitude: -111.78305140606066,
-        latitude: 43.81551975914793,
-    },
-    {
-        name: "Agricultural Engineering Building",
-        code: "AGM",
-        longitude: -111.7831550660907,
-        latitude: 43.8132429750805,
-    },
-    {
-        name: "Engineering Technology Center",
-        code: "ETC",
-        longitude: -111.78307405271207,
-        latitude: 43.814085148082754,
-    },
-    {
-        name: "Thomas E. Ricks Building",
-        code: "RKS",
-        longitude: -111.78117287037354,
-        latitude: 43.81481306705497,
-    },
-    {
-        name: "Spencer W. Kimball Building",
-        code: "KIM",
-        longitude: -111.78149564040112,
-        latitude: 43.81708162489654,
-    },
-    {
-        name: "John W. Hart Building",
-        code: "HRT",
-        longitude: -111.78522432352315,
-        latitude: 43.81953202562512,
-    },
-    {
-        name: "Student Health Center",
-        code: "SHC",
-        longitude: -111.77925936684649,
-        latitude: 43.816844810185195,
-    },
-    {
-        name: "BYU-Idaho Stadium",
-        code: "STA",
-        longitude: -111.78602157247036,
-        latitude: 43.82092641339254,
-    },
-    {
-        name: "Visual Arts Studio",
-        code: "VAS",
-        longitude: -111.7816058835756,
-        latitude: 43.82092547356725,
-    },
-    {
-        name: "University Communications Building",
-        code: "UCB",
-        longitude:  -111.77936653078693,
-        latitude: 43.817292606798596,
-    },
-    {
-        name: "Lowell G. Biddulph Building",
-        code: "BID",
-        longitude: -111.78508082692004,
-        latitude: 43.81709067735768,
-    },
-    {
-        name: "William F. Rigby Building",
-        code: "RIG",
-        longitude: -111.78443552560194,
-        latitude: 43.81707873839289,
-    },
-    {
-        name: "University Operations Building",
-        code: "PPO",
-        longitude: -111.78570471980477,
-        latitude: 43.81612329405016,
-    },
-    {
-        name: "Facilities Management Services Building",
-        code: "PPS",
-        longitude: -111.78550549249228,
-        latitude: 43.81620670770126,
-    },
-    {
-        name: "Outdoor Rental Center",
-        code: "ORC",
-        longitude: -111.78608485336468,
-        latitude: 43.82117611247245,
-    },
-    {
-        name: "Stadium Studio",
-        code: "STU",
-        longitude: -111.78602507009823,
-        latitude: 43.82093289796658,
-    },
-];
-
-
-// -------------------------------------------------------------------------
-// MAP CONFIG/SETUP
-// -------------------------------------------------------------------------
-
+import { buildBuildingMap } from './map-data.js';
+import {
+    openBuildingPopup,
+    openProfessorPopup,
+    closeMapPopup,
+    isMapPopupOpen,
+    registerPopupPositioner,
+} from './map-popup.js';
+import { filterByBuilding, selectProfessorCard } from './map-bridge.js';
+import { registerMapHandlers } from './map-bridge.js';
 import { API_BASE_URL } from './config.js';
+import { buildingList } from './buildings.js';
 
-const [esriConfig, Map, MapView, Graphic, GraphicsLayer] =
+const [esriConfig, EsriMap, MapView, Graphic, GraphicsLayer, Point] =
     await $arcgis.import([
-        "@arcgis/core/config.js",
-        "@arcgis/core/Map.js",
-        "@arcgis/core/views/MapView.js",
-        "@arcgis/core/Graphic.js",
-        "@arcgis/core/layers/GraphicsLayer.js",
+        '@arcgis/core/config.js',
+        '@arcgis/core/Map.js',
+        '@arcgis/core/views/MapView.js',
+        '@arcgis/core/Graphic.js',
+        '@arcgis/core/layers/GraphicsLayer.js',
+        '@arcgis/core/geometry/Point.js',
     ]);
 
-<<<<<<< Updated upstream
-// 1. Get ArcGIS config from backend
-=======
-const API_BASE_URL = "http://66.112.209.106:3000";
-
-// Get ArcGIS config from backend
->>>>>>> Stashed changes
 const mapConfig = await fetch(`${API_BASE_URL}/map/config`)
     .then((res) => res.json());
 
-// console.log("Map config:", mapConfig);
-
-// Set ArcGIS API key BEFORE creating the map
 esriConfig.apiKey = mapConfig.apiKey;
 
-// 3. Create map (just a container object)
-const map = new Map({
-    basemap: mapConfig.basemap || "arcgis-navigation",
+const map = new EsriMap({
+    basemap: mapConfig.basemap || 'arcgis-navigation',
 });
 
-// Create view (the actual visuals of the map)
 const view = new MapView({
-    container: "map-canvas",
+    container: 'map-canvas',
     map: map,
     center: [
         mapConfig.center.longitude,
-        mapConfig.center.latitude
+        mapConfig.center.latitude,
     ],
     zoom: mapConfig.zoom || 15,
     constraints: {
@@ -223,53 +43,323 @@ const view = new MapView({
     },
 });
 
+view.popupEnabled = false;
 
-// -------------------------------------------------------------------------
-// MAP PINS ("locations")
-// -------------------------------------------------------------------------
-
-// Add graphics layer (place where we can add our own visual data)
 const graphicsLayer = new GraphicsLayer();
 map.add(graphicsLayer);
 
-// Get building locations from backend
-const locations = await fetch(`${API_BASE_URL}/map-locations`)
-    .then((res) => res.json());
+const buildingGraphics = new Map();
+const buildingCoords = new Map(
+    buildingList.map((b) => [b.code, { longitude: b.longitude, latitude: b.latitude }]),
+);
 
-console.log("Map locations:", locations);
+let hoveredBuilding = null;
+let selectedBuilding = null;
+let popupAnchor = null;
+let extentWatchHandle = null;
+let sizeWatchHandle = null;
 
-// Define what a marker symbol looks like
-const blueMapPinSymbol = {
-    type: "simple-marker",
-    style: "circle",
-    color: [0, 82, 110],
-    size: "14px",
-    outline: {
-        color: [255, 255, 255],
-        width: 2,
-    },
-};
+function createPinSymbol(state = 'default') {
+    const config = {
+        default: { size: '14px', color: [0, 82, 110], outlineWidth: 2 },
+        hover: { size: '18px', color: [0, 100, 135], outlineWidth: 2 },
+        selected: { size: '20px', color: [147, 197, 253], outlineWidth: 3 },
+    }[state];
 
-// Add markers
-locations
-    .filter((location) => location.latitude && location.longitude)
-    .forEach((location) => {
-        const buildingGraphic = new Graphic({
-            geometry: {
-                type: "point",
-                longitude: location.longitude,
-                latitude: location.latitude,
-            },
-            symbol: blueMapPinSymbol,
-            attributes: {
-                building: location.building,
-                building_name: location.building_name,
-            },
-            popupTemplate: {
-                title: "{building}",
-                content: "{building_name}",
-            },
-        });
+    return {
+        type: 'simple-marker',
+        style: 'circle',
+        color: config.color,
+        size: config.size,
+        outline: {
+            color: [255, 255, 255],
+            width: config.outlineWidth,
+        },
+    };
+}
 
-        graphicsLayer.add(buildingGraphic);
+function createCountLabel(count) {
+    if (!count) return null;
+
+    return {
+        type: 'text',
+        color: 'white',
+        text: String(count),
+        font: {
+            size: 9,
+            weight: 'bold',
+            family: 'Inter',
+        },
+        haloColor: [0, 82, 110],
+        haloSize: 6,
+        yoffset: 1,
+    };
+}
+
+function getBuildingState(buildingCode) {
+    if (selectedBuilding === buildingCode) return 'selected';
+    if (hoveredBuilding === buildingCode) return 'hover';
+    return 'default';
+}
+
+function updateBuildingSymbol(buildingCode) {
+    const entry = buildingGraphics.get(buildingCode);
+    if (!entry) return;
+    entry.pinGraphic.symbol = createPinSymbol(getBuildingState(buildingCode));
+}
+
+function setHoveredBuilding(buildingCode) {
+    if (hoveredBuilding === buildingCode) return;
+    const previous = hoveredBuilding;
+    hoveredBuilding = buildingCode;
+    if (previous) updateBuildingSymbol(previous);
+    if (buildingCode) updateBuildingSymbol(buildingCode);
+}
+
+function highlightBuilding(buildingCode) {
+    const previous = selectedBuilding;
+    selectedBuilding = buildingCode || null;
+    if (previous) updateBuildingSymbol(previous);
+    if (selectedBuilding) updateBuildingSymbol(selectedBuilding);
+}
+
+function panToBuilding(buildingCode) {
+    const entry = buildingGraphics.get(buildingCode);
+    if (!entry) return;
+
+    view.goTo({
+        center: [entry.longitude, entry.latitude],
+        zoom: Math.max(view.zoom, 17),
     });
+}
+
+function getAnchorForBuilding(buildingCode) {
+    const entry = buildingGraphics.get(buildingCode);
+    if (entry) {
+        return { longitude: entry.longitude, latitude: entry.latitude };
+    }
+    const coords = buildingCoords.get(buildingCode);
+    if (coords?.longitude && coords?.latitude) {
+        return coords;
+    }
+    return null;
+}
+
+function anchorToScreen(anchor) {
+    const point = new Point({
+        longitude: anchor.longitude,
+        latitude: anchor.latitude,
+    });
+    return view.toScreen(point);
+}
+
+function positionMapPopup() {
+    if (!popupAnchor || !isMapPopupOpen()) return;
+
+    const popup = document.getElementById('map-popup');
+    const mapCanvas = document.getElementById('map-canvas');
+    const mapViewport = document.getElementById('map-viewport');
+    if (!popup || !mapCanvas || !mapViewport) return;
+
+    const screen = anchorToScreen(popupAnchor);
+    if (!screen) return;
+
+    const canvasRect = mapCanvas.getBoundingClientRect();
+    const viewportRect = mapViewport.getBoundingClientRect();
+
+    popup.style.left = `${screen.x + canvasRect.left - viewportRect.left}px`;
+    popup.style.top = `${screen.y + canvasRect.top - viewportRect.top}px`;
+}
+
+function schedulePopupReposition() {
+    requestAnimationFrame(() => {
+        positionMapPopup();
+    });
+}
+
+function startPopupTracking(anchor) {
+    popupAnchor = anchor;
+    schedulePopupReposition();
+
+    stopPopupTracking(false);
+
+    extentWatchHandle = view.watch('extent', schedulePopupReposition);
+    sizeWatchHandle = view.watch('size', schedulePopupReposition);
+}
+
+function blurMapSurface() {
+    view.container.querySelector('.esri-view-surface')?.blur();
+    if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+    }
+}
+
+function stopPopupTracking(clearAnchor = true) {
+    if (clearAnchor) {
+        popupAnchor = null;
+    }
+    if (extentWatchHandle) {
+        extentWatchHandle.remove();
+        extentWatchHandle = null;
+    }
+    if (sizeWatchHandle) {
+        sizeWatchHandle.remove();
+        sizeWatchHandle = null;
+    }
+}
+
+function handleOpenProfessorPopup(prof) {
+    const anchor = getAnchorForBuilding(prof.building);
+    if (!anchor) return;
+
+    openProfessorPopup(prof, {
+        onProfessorSelect: (selected) => {
+            selectProfessorCard(selected.professor_id);
+        },
+    });
+    startPopupTracking(anchor);
+}
+
+function buildBuildingPins(professors) {
+    const placePins = () => {
+        graphicsLayer.removeAll();
+        buildingGraphics.clear();
+        hoveredBuilding = null;
+
+        const buildingMap = buildBuildingMap(professors);
+
+        for (const [buildingCode, buildingData] of buildingMap) {
+            const pinGraphic = new Graphic({
+                geometry: {
+                    type: 'point',
+                    longitude: buildingData.longitude,
+                    latitude: buildingData.latitude,
+                },
+                symbol: createPinSymbol(getBuildingState(buildingCode)),
+                attributes: {
+                    building: buildingCode,
+                    building_name: buildingData.building_name,
+                    professorCount: buildingData.professorCount,
+                },
+            });
+
+            graphicsLayer.add(pinGraphic);
+
+            const labelSymbol = createCountLabel(buildingData.professorCount);
+            if (labelSymbol) {
+                graphicsLayer.add(new Graphic({
+                    geometry: {
+                        type: 'point',
+                        longitude: buildingData.longitude,
+                        latitude: buildingData.latitude,
+                    },
+                    symbol: labelSymbol,
+                    attributes: {
+                        building: buildingCode,
+                        building_name: buildingData.building_name,
+                        professorCount: buildingData.professorCount,
+                    },
+                }));
+            }
+
+            buildingGraphics.set(buildingCode, {
+                pinGraphic,
+                longitude: buildingData.longitude,
+                latitude: buildingData.latitude,
+                data: buildingData,
+            });
+        }
+
+        if (selectedBuilding && !buildingGraphics.has(selectedBuilding)) {
+            selectedBuilding = null;
+        }
+
+        if (isMapPopupOpen()) {
+            closeMapPopup();
+            stopPopupTracking();
+        }
+    };
+
+    view.when(placePins);
+}
+
+registerMapHandlers({
+    highlightBuilding,
+    panToBuilding,
+    buildBuildingPins,
+    openProfessorPopup: handleOpenProfessorPopup,
+    closeMapPopup: () => {
+        closeMapPopup();
+        stopPopupTracking();
+    },
+});
+
+registerPopupPositioner(schedulePopupReposition);
+
+function getBuildingFromHit(hit) {
+    const graphic = hit.graphic;
+    if (!graphic?.attributes?.building) return null;
+    return graphic.attributes.building;
+}
+
+view.on('pointer-move', async (event) => {
+    const hit = await view.hitTest(event);
+    const buildingHit = hit.results.find(
+        (result) => result.graphic?.layer === graphicsLayer && result.graphic?.attributes?.building,
+    );
+    setHoveredBuilding(buildingHit ? getBuildingFromHit(buildingHit) : null);
+});
+
+view.on('click', async (event) => {
+    const hit = await view.hitTest(event);
+    const buildingHit = hit.results.find(
+        (result) => result.graphic?.layer === graphicsLayer && result.graphic?.attributes?.building,
+    );
+
+    if (!buildingHit) {
+        closeMapPopup();
+        stopPopupTracking();
+        blurMapSurface();
+        return;
+    }
+
+    const buildingCode = getBuildingFromHit(buildingHit);
+    const entry = buildingGraphics.get(buildingCode);
+    if (!entry) return;
+
+    blurMapSurface();
+    highlightBuilding(buildingCode);
+
+    openBuildingPopup(entry.data, {
+        onShowInList: (code) => {
+            filterByBuilding(code);
+        },
+        onProfessorSelect: (prof) => {
+            selectProfessorCard(prof.professor_id);
+            if (prof.building) {
+                highlightBuilding(prof.building);
+            }
+        },
+    });
+
+    startPopupTracking({
+        longitude: entry.longitude,
+        latitude: entry.latitude,
+    });
+});
+
+view.when(() => {
+    view.container.style.cursor = 'default';
+
+    const surface = view.container.querySelector('.esri-view-surface');
+    if (surface) {
+        surface.setAttribute('tabindex', '-1');
+        surface.addEventListener('focus', () => {
+            surface.blur();
+        });
+    }
+});
+
+view.on('pointer-move', () => {
+    view.container.style.cursor = hoveredBuilding ? 'pointer' : 'default';
+});
