@@ -44,6 +44,9 @@ const view = new MapView({
 });
 
 view.popupEnabled = false;
+view.ui.remove("zoom");
+view.ui.add("zoom", "bottom-right");
+view.ui.add(document.getElementById("map-controls"), "bottom-right");
 
 const graphicsLayer = new GraphicsLayer();
 map.add(graphicsLayer);
@@ -362,4 +365,40 @@ view.when(() => {
 
 view.on('pointer-move', () => {
     view.container.style.cursor = hoveredBuilding ? 'pointer' : 'default';
+});
+
+const PAN_DISTANCE = 120;
+
+document.querySelectorAll(".arrow-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+
+        let x = 0;
+        let y = 0;
+
+        switch (button.dataset.dir) {
+            case "up":
+                y = PAN_DISTANCE;
+                break;
+
+            case "down":
+                y = -PAN_DISTANCE;
+                break;
+
+            case "left":
+                x = PAN_DISTANCE;
+                break;
+
+            case "right":
+                x = -PAN_DISTANCE;
+                break;
+        }
+
+        view.goTo({
+            target: view.toMap({
+                x: view.width / 2 - x,
+                y: view.height / 2 - y
+            })
+        });
+
+    });
 });
