@@ -28,16 +28,16 @@ Data Storage: SQLite, Ubuntu Server, AWS
 Development Tools: Visual Studio Code, GitHub, Postman API
 
 ## Software Features
-* [ ] List/table of professors with their office hours, department, office location, contact info, etc.
-   * [ ] Search functionality
-   * [ ] Filters for department, building, etc.
-   * [ ] Sortable by name, department, etc.
-* [ ] Map view with professor office locations
-   * [ ] User can Zoom/pan map view 
-   * [ ] Map pins are highlighted when list items are hovered or selected
-   * [ ] Selecting a map pins presents a modal (pop-up) with more professor info 
+* [x] List/table of professors with their office hours, department, office location, contact info, etc.
+   * [x] Search functionality
+   * [x] Filters for department, building, etc.
+   * [x] Sortable by name, department, etc.
+* [x] Map view with professor office locations
+   * [x] User can Zoom/pan map view 
+   * [x] Map pins are highlighted when list items are hovered or selected
+   * [x] Selecting a map pins presents a modal (pop-up) with more professor info 
 * [ ] Schedule view where users can look for available professors at a specific time?
-* [ ] Site layout adjusts when viewed on mobiel devices/smaller screens
+* [x] Site layout adjusts when viewed on mobiel devices/smaller screens
 
 ## Team Communication
 Discord
@@ -60,4 +60,18 @@ Discord
 |Frontend Team              |Matthew Hilton, Sid Skinner             |
 
 ## Reflections
-(DO NOT FILL IN YET)
+What the team Learned?
+- AI is really useful
+- How to work together without any individual knowing 100% of how it all works (but all together we do)
+- How to use git branches
+- How to connect a frontend, backend API, and database together
+What can be Improved?
+- Live data updates after semester changes
+- Fill in unknowns in the data
+- Better data validation before importing professor information
+Future Plans for this Project?
+- Find a way to make data stay up to date
+- Find a way to get the office hours
+- Users and login information
+- Add more data
+- Build an admin tool to update professor, room, and office hour data
